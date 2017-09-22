@@ -16,9 +16,13 @@ public class AuthManager {
      SharedPreferences.Editor ed;
      String token = "Token";
 
+    public String authManager = "auth";
+
     public AuthManager(Activity cnt){
-        sPref = cnt.getPreferences(Context.MODE_PRIVATE);
+
+        sPref = cnt.getSharedPreferences(authManager, Context.MODE_PRIVATE);
     }
+
     public void saveToken(String str){
         //// TODO: 08.09.2017 сохранить токен в preferenses
 
