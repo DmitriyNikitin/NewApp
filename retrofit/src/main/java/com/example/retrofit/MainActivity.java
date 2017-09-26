@@ -2,9 +2,13 @@ package com.example.retrofit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -21,6 +26,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -28,55 +34,43 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
-    private String URL = "https://api.blagoyar.ru";
-
-    private Gson gson = new GsonBuilder().create();
-
-    private Retrofit retrofit = new Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .baseUrl(URL)
-            .build();
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main);
 
-        Link intf = retrofit.create(Link.class);
-        OkHttpClient client = new OkHttpClient();
+        ListView listView = (ListView)findViewById(R.id.list);
+        TextView textView =(TextView)findViewById(R.id.Error);
+        ReceptManager rM = new ReceptManager(this, textView, listView);
 
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n\"page\": 1,\r\n\"per_page\": 20, \r\n\"is_main\": false}");
-        Request request = new Request.Builder()
-                .url("http://api.blagoyar.ru/v1/recipes")
-                .post(body)
-                .addHeader("access-token", "6scvSWQGWJupF1x1cp8ZXw")
-                .addHeader("cache-control", "no-cache")
-                .addHeader("client", "jMAcbB8dHizcPajSyCp3eg")
-                .addHeader("content-type", "application/json")
-                .addHeader("expiry", "1507020023")
-                .addHeader("host", "api.blagoyar.ru")
-                .addHeader("postman-token", "7df8bb7a-65fc-582e-feed-ffbc8b8a9019")
-                .addHeader("token-type", "Bearer")
-                .addHeader("uid", "mimitest3@list.ru")
-                .build();
+        rM.fetch();
+      /* APIManager.getInstance().getRequestInterface().getRecipes(rM.udid, rM.client, rM.access_token, rM.body).enqueue(new Callback<ResponseReceptes>() {
 
-        Call<Object> call = intf.resipes(request);
-        try {
-            Response<Object> response = call.execute();
-        /*    Map<String,String> map = gson.fromJson(response.body().toString(),Map.class);
-            for(Map.Entry e : map.entrySet()) {
-                System.out.println(e.getKey()+" "+ e.getValue());
-            }*/
+            @Override
+            public void onResponse(Call<ResponseReceptes> call, Response<ResponseReceptes> response) {
+                ResponseReceptes recep = response.body();
+                Log.d("","");
+
+                if(recep.getData().getRecipes() != null)
+                {
+
+                    CustomListAdapter adapter = new CustomListAdapter(MainActivity.this, recep.getData().getRecipes());
+                    listView.setAdapter(adapter);
+
+                    textView.setVisibility(View.INVISIBLE);
+                }else{
+                    textView.setVisibility(View.VISIBLE);
+                }
             }
-           catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onFailure(Call<ResponseReceptes> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
+                Log.d("","");
+            }
+        });*/
+
+        //TODO: Нужно перенести это в проект выше, то есть эти данные нужно вывести это в списке
 
     }
 }
