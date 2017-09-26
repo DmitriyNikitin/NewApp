@@ -33,15 +33,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public ListView listView;
+    public TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        ListView listView = (ListView)findViewById(R.id.list);
-        TextView textView =(TextView)findViewById(R.id.Error);
-        ReceptManager rM = new ReceptManager(this, textView, listView);
+      listView = (ListView)findViewById(R.id.list);
+        textView =(TextView)findViewById(R.id.Error);
+        ReceptManager rM = new ReceptManager(this);
 
         rM.fetch();
       /* APIManager.getInstance().getRequestInterface().getRecipes(rM.udid, rM.client, rM.access_token, rM.body).enqueue(new Callback<ResponseReceptes>() {

@@ -11,10 +11,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
+
 
 /**
  * Created by админ on 26.09.2017.
@@ -22,15 +19,13 @@ import retrofit2.http.Header;
 
 public class ReceptManager {
 
-    Context context;
-    TextView textView;
-    ListView listView;
 
-    public ReceptManager(Context context, TextView textView, ListView listView){
+    MainActivity mainActivity;
 
-        this.context = context;
-        this.textView = textView;
-        this.listView = listView;
+    public ReceptManager(MainActivity mainActivity){
+
+        this.mainActivity = mainActivity;
+
     }
 
         String udid = "romankov.sergey1@gmail.com";
@@ -49,18 +44,17 @@ public class ReceptManager {
                 if(recep.getData().getRecipes() != null)
                 {
 
-                    CustomListAdapter adapter = new CustomListAdapter(context, recep.getData().getRecipes());
-                    listView.setAdapter(adapter);
-
-                    textView.setVisibility(View.INVISIBLE);
+                    CustomListAdapter adapter = new CustomListAdapter(mainActivity, recep.getData().getRecipes());
+                    mainActivity.listView.setAdapter(adapter);
+                    mainActivity.findViewById(R.id.Error).setVisibility(View.INVISIBLE);
                 }else{
-                    textView.setVisibility(View.VISIBLE);
+                    mainActivity.findViewById(R.id.Error).setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseReceptes> call, Throwable t) {
-                Toast.makeText(context, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mainActivity, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
             }
         });
     }
