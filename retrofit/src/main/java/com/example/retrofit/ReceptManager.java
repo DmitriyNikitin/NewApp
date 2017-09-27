@@ -49,6 +49,7 @@ public class ReceptManager {
                     mainActivity.findViewById(R.id.Error).setVisibility(View.INVISIBLE);
                 }else{
                     mainActivity.findViewById(R.id.Error).setVisibility(View.VISIBLE);
+
                 }
             }
 

@@ -33,43 +33,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
+
     public ListView listView;
     public TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-      listView = (ListView)findViewById(R.id.list);
+        listView = (ListView)findViewById(R.id.list);
         textView =(TextView)findViewById(R.id.Error);
-        ReceptManager rM = new ReceptManager(this);
+        ReceptManagerV2 rM = new ReceptManagerV2(this);
 
         rM.fetch();
-      /* APIManager.getInstance().getRequestInterface().getRecipes(rM.udid, rM.client, rM.access_token, rM.body).enqueue(new Callback<ResponseReceptes>() {
-
-            @Override
-            public void onResponse(Call<ResponseReceptes> call, Response<ResponseReceptes> response) {
-                ResponseReceptes recep = response.body();
-                Log.d("","");
-
-                if(recep.getData().getRecipes() != null)
-                {
-
-                    CustomListAdapter adapter = new CustomListAdapter(MainActivity.this, recep.getData().getRecipes());
-                    listView.setAdapter(adapter);
-
-                    textView.setVisibility(View.INVISIBLE);
-                }else{
-                    textView.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseReceptes> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
-                Log.d("","");
-            }
-        });*/
 
         //TODO: Нужно перенести это в проект выше, то есть эти данные нужно вывести это в списке
 
