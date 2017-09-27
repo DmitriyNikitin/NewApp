@@ -35,7 +35,7 @@ public class ResponseReceptes {
         }
 
         public List<RecipeModel> getRecipes() {
-            recipes = null;
+
             return recipes;
         }
 

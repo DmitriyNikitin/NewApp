@@ -13,43 +13,21 @@ import retrofit2.Response;
  * Created by админ on 27.09.2017.
  */
 
-public class ReceptManagerV2 implements ReceptInterface {
+public class ReceptManagerV2 {
 
-    MainActivity mainActivity;
+    public void setInterface() {
+        ReceptManager receptManager = new ReceptManager();
+        receptManager.fetch(new ReceptInterface() {
+            @Override
+            public void ifSuccess(ResponseReceptes responseReceptes) {
 
-   public ReceptManagerV2(MainActivity mainActivity){
-       this.mainActivity = mainActivity;
-   }
+            }
 
-    String udid = "romankov.sergey1@gmail.com";
-    String client = "QSxm8ptMGjXFK7jxl5-zog";
-    String access_token = "jby65dq84_yk0IXYdEofeg";
-    MediaType mediaType = MediaType.parse("application/json");
-    RequestBody body = RequestBody.create(mediaType, "{\r\n\"page\": 1,\r\n\"per_page\": 20, \r\n\"is_main\": false}");
+            @Override
+            public void ifFailed() {
 
-
-    @Override
-    public void fetch() {
-            APIManager.getInstance().getRequestInterface().getRecipes(udid , client, access_token, body).enqueue(new Callback<ResponseReceptes>() {
-                @Override
-                public void onResponse(Call<ResponseReceptes> call, Response<ResponseReceptes> response) {
-                    ResponseReceptes recep = response.body();
-                    if(recep.getData().getRecipes() != null)
-                    {
-
-                        CustomListAdapter adapter = new CustomListAdapter(mainActivity, recep.getData().getRecipes());
-                        mainActivity.listView.setAdapter(adapter);
-                        mainActivity.findViewById(R.id.Error).setVisibility(View.INVISIBLE);
-                    }else{
-                        mainActivity.findViewById(R.id.Error).setVisibility(View.VISIBLE);
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseReceptes> call, Throwable t) {
-                    Toast.makeText(mainActivity, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
-                }
-            });
+            }
+        });
     }
+
 }

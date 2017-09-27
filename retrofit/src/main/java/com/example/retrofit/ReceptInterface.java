@@ -5,6 +5,6 @@ package com.example.retrofit;
  */
 
 public interface ReceptInterface {
-
-void fetch();
+    void ifSuccess(ResponseReceptes responseReceptes);
+    void ifFailed();
 }

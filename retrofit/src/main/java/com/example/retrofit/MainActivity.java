@@ -44,9 +44,29 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.list);
         textView =(TextView)findViewById(R.id.Error);
-        ReceptManagerV2 rM = new ReceptManagerV2(this);
+        ReceptManager rM = new ReceptManager();
+        rM.fetch(new ReceptInterface() {
+            @Override
+            public void ifSuccess(ResponseReceptes responseReceptes) {
+                if(responseReceptes.getData().getRecipes() != null)
+                {
 
-        rM.fetch();
+                    CustomListAdapter adapter = new CustomListAdapter(MainActivity.this, responseReceptes.getData().getRecipes());
+                    listView.setAdapter(adapter);
+                    textView.setVisibility(View.INVISIBLE);
+                }else{
+                   textView.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void ifFailed() {
+                Toast.makeText(MainActivity.this, "Проверьте соединение с сетью", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
         //TODO: Нужно перенести это в проект выше, то есть эти данные нужно вывести это в списке
 

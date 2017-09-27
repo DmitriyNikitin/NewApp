@@ -20,12 +20,9 @@ import retrofit2.Response;
 public class ReceptManager {
 
 
-    MainActivity mainActivity;
 
-    public ReceptManager(MainActivity mainActivity){
 
-        this.mainActivity = mainActivity;
-
+    public ReceptManager(){
     }
 
         String udid = "romankov.sergey1@gmail.com";
@@ -36,26 +33,19 @@ public class ReceptManager {
 
 
 
-    public void fetch(){
+    public void fetch(final ReceptInterface receptInterface){
         APIManager.getInstance().getRequestInterface().getRecipes(udid , client, access_token, body).enqueue(new Callback<ResponseReceptes>() {
             @Override
             public void onResponse(Call<ResponseReceptes> call, Response<ResponseReceptes> response) {
                 ResponseReceptes recep = response.body();
-                if(recep.getData().getRecipes() != null)
-                {
 
-                    CustomListAdapter adapter = new CustomListAdapter(mainActivity, recep.getData().getRecipes());
-                    mainActivity.listView.setAdapter(adapter);
-                    mainActivity.findViewById(R.id.Error).setVisibility(View.INVISIBLE);
-                }else{
-                    mainActivity.findViewById(R.id.Error).setVisibility(View.VISIBLE);
+                receptInterface.ifSuccess(recep);
 
-                }
             }
 
             @Override
             public void onFailure(Call<ResponseReceptes> call, Throwable t) {
-                Toast.makeText(mainActivity, "Проверьте связь с сетью.", Toast.LENGTH_LONG).show();
+               receptInterface.ifFailed();
             }
         });
     }
